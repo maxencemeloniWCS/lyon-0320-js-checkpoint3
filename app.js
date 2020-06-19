@@ -260,17 +260,53 @@ app.delete('/user/playlists/:id', (req, res) => {
   });
 });
 
-app.delete('/user/playlists/:id/delete-track/:id-track', (req, res) => {
+// app.delete('/user/playlists/:id/delete-track/:id-track', (req, res) => {
 
-  const idPlaylist = req.params.id;
-  const idTrack = req.params.id-track;
+//   const idPlaylist = req.params.id;
+//   const idTrack = req.params.id-track;
 
-  connection.query('DELETE t FROM track t JOIN playlist p ON t.playlist_id = p.id WHERE t.id = ? AND p.id', [idTrack, idPlaylist], err => {
+//   connection.query('DELETE t FROM track t JOIN playlist p ON t.playlist_id = p.id WHERE t.id = ? AND p.id', [idTrack, idPlaylist], err => {
+//     if (err) {
+//       console.log(err);
+//       res.status(500).send("Erreur lors de la suppression d'une musique");
+//     } else {
+//       res.sendStatus(200);
+//     }
+//   });
+// });
+
+app.delete('/user/playlists/:id/tracks/:trackId', (req, res) => {
+  const track_id = req.params.trackId;
+  connection.query('DELETE FROM track where id = ?', track_id, (err, results) => {
     if (err) {
       console.log(err);
-      res.status(500).send("Erreur lors de la suppression d'une musique");
+      res.status(500).send("Erreur lors de la suppression du morceau");
     } else {
       res.sendStatus(200);
+    }
+  });
+});
+
+app.get('/user/playlist-full', (req, res) => {
+
+  connection.query('SELECT playlist.title, playlist.genre FROM playlist LEFT JOIN track ON playlist.id = track.playlist_id WHERE artist = ?', req.query.artist, (err, results) => {
+    if (err) {
+      console.log(err);
+      res.status(404).send(`Playlists not found for artist ${req.query.artist}`);
+    } else {
+      res.json(results);
+    }
+  })
+});
+
+app.put('/user/playlists/:id/tracks/:trackId', (req, res) => {
+  const track_id = req.params.trackId;
+  connection.query('UPDATE track SET ? WHERE playlist_id = ? AND WHERE id = ?', [req.body, req.params.id, track_id], (err, results) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Erreur lors de la suppression du morceau");
+    } else {
+      res.json(req.body);
     }
   });
 });
