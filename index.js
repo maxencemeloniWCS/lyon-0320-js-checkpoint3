@@ -30,7 +30,7 @@ app.get('/track', (req, res) => {
 });
 
 app.post('/playlist', (req, res) => {
-    const formData = req.body[0];
+    const formData = req.params;
     connection.query('INSERT INTO playlist SET ?', formData, (err, results) => {
         if (err) {
             console.log(err);
