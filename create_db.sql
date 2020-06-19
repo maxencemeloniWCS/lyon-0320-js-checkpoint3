@@ -1,2 +1,0 @@
-CREATE SCHEMA `checkpoint3` DEFAULT CHARACTER SET utf8mb4 ;
-
