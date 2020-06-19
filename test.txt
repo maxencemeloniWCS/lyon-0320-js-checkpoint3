@@ -1,1 +1,8 @@
-test
+CREATE TABLE track(
+  id int NOT NULL primary key AUTO_INCREMENT,
+  title varchar(255),
+  artist varchar(255),
+  album_picture varchar(255),
+  youtube_url varchar(255),
+  FOREIGN KEY playlist_id REFERENCES playlist(id)
+);
