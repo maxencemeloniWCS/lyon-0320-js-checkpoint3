@@ -1,0 +1,53 @@
+### CREATE PLAYLIST
+POST http://localhost:3000/playlist
+Content-Type: application/json
+
+{
+  "title": "test",
+  "genre": "test"
+}
+
+### READ ONE PLAYLIST
+GET http://localhost:3000/playlist/1
+
+### CREATE TRACK
+POST http://localhost:3000/track
+Content-Type: application/json
+
+{
+  "playlist_id": "1",
+  "title": "test",
+  "artist": "test",
+  "album_picture": "test",
+  "youtube_url": "test"
+}
+
+### READ ALL TRACKS FROM PLAYLIST
+GET http://localhost:3000/playlist/1/track
+
+### DELETE PLAYLIST
+DELETE http://localhost:3000/playlist/1
+
+### UPDATE PLAYLIST
+PUT http://localhost:3000/playlist/1
+Content-Type: application/json
+
+{
+  "title": "test",
+  "genre": "test"
+}
+
+### DELETE TRACK
+DELETE http://localhost:3000/track/1
+
+### UPDATE TRACK
+PUT http://localhost:3000/track/1
+Content-Type: application/json
+
+{
+  "playlist_id": "1",
+  "title": "test",
+  "artist": "test",
+  "album_picture": "test",
+  "youtube_url": "test"
+}
