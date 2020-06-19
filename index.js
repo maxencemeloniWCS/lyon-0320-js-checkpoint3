@@ -90,6 +90,20 @@ app.post('/api/playlist', (req, res) => {
   });
 });
 
+// DELETE A PLAYLIST
+
+app.delete('/api/playlist/:id', (req, res) => {
+  const idPlaylist = req.params.id;
+  connection.query('DELETE FROM playlist WHERE id = ?', [idPlaylist], err => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Erreur lors de la suppression d'une playlist");
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+
 // WHEN AN ERROR IS COMING ...
 
 app.listen(port, (err) => {
