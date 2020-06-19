@@ -23,11 +23,11 @@ routerPlaylist.post('/', (req,res) => {
           }
           const insertedplaylist = records[0];
           const host = req.get('host');
-          const location = `http://host${req.url}/${playlist.id}`;
+          const location = `http://host${req.url}/${insertedplaylist.id}`;
           return res
             .status(201)
             .set('Location', location)
-            .json(playlist);
+            .json(insertedplaylist);
         });
       });
     },
@@ -35,9 +35,9 @@ routerPlaylist.post('/', (req,res) => {
 
 //en tant qu'utilisateur, je veux pouvoir consulter une playlist en renseignant son id dans l'url (juste ses données propres, pas les pistes associées).
 
-routerPlaylist.get('/playlist/:id', (req, res) => {
-  const playlistId = req.params.id;
-  connection.query('SELECT * FROM playlist WHERE id = ?', [playlistId], (err, results) => {
+routerPlaylist.get('/:id', (req, res) => {
+  console.log(req.params.id);
+  connection.query('SELECT * FROM playlist WHERE id = ?', req.params.id, (err, results) => {
     if (err) {
       return res.status(500).send(`An error occurred: ${err.message}`);
     }
@@ -64,9 +64,8 @@ routerPlaylist.delete('/playlist/:id', (req, res) => {
 });
 
 //en tant qu'utilisateur, je veux pouvoir modifier une playlist.
-routerPlaylist.put('/playlist:id',
-  (req, res) => {
-    if (req.body) {
+routerPlaylist.put('/:id',(req, res) => {
+    if (!req.body) {
       return res.status(422).json({ errors: errors.array() });
     }
     return connection.query('UPDATE playlist SET ? WHERE id= ?', [req.body, req.params.id], (err, results) => {
@@ -85,11 +84,11 @@ routerPlaylist.put('/playlist:id',
         }
         const insertedplaylist = records[0];
         const host = req.get('host');
-        const location = `http://host${req.url}/${playlist.id}`;
+        const location = `http://host${req.url}/${insertedplaylist.id}`;
         return res
           .status(201)
           .set('Location', location)
-          .json(playlist);
+          .json(insertedplaylist);
       });
     });
   }
