@@ -165,6 +165,39 @@ app.delete('/track/:id', (req, res) => {
   });
 });
 
+// en tant qu'utilisateur, je veux modifier un morceau d'une playlist.
+// BESOINS:
+// - id du morceau à modifier dans l'URL
+// - données dans le body
+app.put('/track/:id', (req, res) => {
+  const idTrack = req.params.id; // récupère l'id de la playlist
+  const data = req.body; // combine les données du body + l'id playlist
+  console.log(data);
+  // connexion à la base de données, et insertion d'une piste
+  connection.query('UPDATE track SET ? WHERE id = ?', [data, idTrack], (err, results) => {
+    if (err) {
+      // Si une erreur est survenue, alors on informe l'utilisateur de l'erreur
+      console.log(err);
+      res.status(500).send('Erreur lors de la modification de la playlist');
+    } else {
+      // We use the insertId attribute of results to build the WHERE clause
+      return connection.query('SELECT * FROM track WHERE id = ?', idTrack, (err2, records) => {
+        if (err2) {
+          return res.status(500).json({
+            error: err2.message,
+            sql: err2.sql,
+          });
+        }
+        // If all went well, records is an array, from which we use the 1st item
+        const playlist = records[0];
+        return res
+          .status(200)
+          .json(playlist);
+      });
+    }
+  });
+});
+
 // Lancement du serveur
 app.listen(process.env.PORT, (err) => {
   if (err) {
