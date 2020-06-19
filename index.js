@@ -83,10 +83,10 @@ app.get("/api/playlists/:id", (req, res) => {
     }
   );
 });
-/* - en tant qu'utilisateur, je veux créer et affecter un morceau à une playlist.
-- en tant qu'utilisateur, je veux lister tous les morceaux d'une playlist.
-- en tant qu'utilisateur, je veux pouvoir supprimer une playlist.
-- en tant qu'utilisateur, je veux pouvoir modifier une playlist.
+/* - en tant qu'utilisateur, je veux créer et affecter un morceau à une playlist. +1
+- en tant qu'utilisateur, je veux lister tous les morceaux d'une playlist. +0.5 
+- en tant qu'utilisateur, je veux pouvoir supprimer une playlist. +1
+- en tant qu'utilisateur, je veux pouvoir modifier une playlist. +1 
 - en tant qu'utilisateur, je veux supprimer un morceau d'une playlist.
 - en tant qu'utilisateur, je veux modifier un morceau d'une playlist. */
 
@@ -152,7 +152,26 @@ app.get("/api/tracks", (req, res) => {
   let sql = "SELECT * FROM track";
   const sqlValues = [];
   if (req.query.playlist_id) {
-    sql += " WHERE track.playlist_id  = ?";
+    sql += " WHERE playlist_id  = ?";
+    sqlValues.push(req.query.playlist_id);
+  }
+  // send an SQL query to get all employees
+  connection.query(sql, sqlValues, (err, results) => {
+    if (err) {
+      // If an error has occurred, then the client is informed of the error
+      res.status(500).send(`An error occurred: ${err.message}`);
+    } else {
+      // If everything went well, we send the result of the SQL query as JSON
+      res.json(results);
+    }
+  });
+});
+
+app.get("/api/tracks", (req, res) => {
+  let sql = "SELECT * FROM track";
+  const sqlValues = [];
+  if (req.query.playlist_id) {
+    sql += " WHERE playlist_id = ?";
     sqlValues.push(req.query.playlist_id);
   }
   // send an SQL query to get all employees
@@ -186,28 +205,43 @@ app.delete("/api/playlists/:id", (req, res) => {
 // en tant qu'utilisateur, je veux pouvoir modifier une playlist.
 
 app.put("/api/playlists/:id", (req, res) => {
-  // récupération des données envoyées
   const IdPlaylist = req.params.id;
   const formData = req.body;
-
-  // connection à la base de données, et insertion de l'employé
-  connection.query(
-    "UPDATE playlist SET ? WHERE id = ?",
+  // send an SQL query to get all users
+  return connection.query(
+    "UPDATE  playlist SET ? WHERE id = ?",
     [formData, IdPlaylist],
-    (err) => {
+    (err, results) => {
       if (err) {
-        // Si une erreur est survenue, alors on informe l'utilisateur de l'erreur
-        console.log(err);
-        res.status(500).send("Erreur lors de la modification de la playlist");
-      } else {
-        // Si tout s'est bien passé, on envoie un statut "ok".
-        res.sendStatus(200);
+        // If an error has occurred, then the client is informed of the error
+        return res.status(500).json({
+          error: err.message,
+          sql: err.sql,
+        });
       }
+      return connection.query(
+        "SELECT * FROM playlist WHERE id = ?",
+        req.params.id,
+        (err2, records) => {
+          if (err2) {
+            return res.status(500).json({
+              error: err2.message,
+              sql: err2.sql,
+            });
+          }
+          const host = req.get("host");
+          const { ...playlist } = records[0];
+          const location = `http://${host}${req.url}/${playlist.id}`;
+          return res.status(200).set("Location", location).json(playlist);
+        }
+      );
     }
   );
 });
-
 // en tant qu'utilisateur, je veux supprimer un morceau d'une playlist.
+("RIP");
+// en tant qu'utilisateur, je veux modifier un morceau d'une playlist.
+("RIP");
 
 app.listen(process.env.PORT, (err) => {
   if (err) {
