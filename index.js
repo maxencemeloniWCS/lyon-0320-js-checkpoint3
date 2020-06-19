@@ -103,7 +103,6 @@ app.get('/playlists/:id/tracks', (request, response) => {
 
 app.delete('/playlists/:id', (request, response) => {
   const playlistToDeleteId = request.params.id;
-  console.log(playlistToDeleteId)
   connection.query('DELETE FROM playlist WHERE id = ?', [playlistToDeleteId], err => {
     if (err) {
       response.status(500).send('Erreur lors de la suppression d\'une playlist')
@@ -133,6 +132,20 @@ app.put('/playlists/:id/tracks/:id2', (request, response) => {
     }
   });
 });
+
+// Supprimer un morceau d'une playlist
+
+app.delete('/playlists/:id/tracks/:id2', (request, response) => {
+  const playlistId = request.params.id;
+  const trackId = request.params.id2;
+  connection.query('DELETE FROM tracks WHERE playlist_id = ? AND id = ?', [playlistId, trackId], err => {
+    if (err) {
+      response.status(500).send('Erreur lors de la suppression d\'un morceau')
+    } else {
+      response.sendStatus(200)
+    }
+  });
+})
 
 
 app.listen(port, (err) => {
