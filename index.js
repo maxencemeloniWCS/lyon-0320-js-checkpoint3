@@ -27,12 +27,13 @@ app.post('/playlists', (request, response) => {
         if (err2) {
           response.status(500).send("Erreur lors de la récupération des données de la playlist")
         } else {
-          response.status(200).json(res[0])
+          response.status(201).json(res[0])
         }
       })
     }
   });
 });
+
 
 // Récupérer une playlist par son Id
 
@@ -60,9 +61,22 @@ app.post('/tracks', (request, response) => {
         if (err2) {
           response.status(500).send("Erreur lors de la récupération des données du morceau")
         } else {
-          response.status(200).json(res[0])
+          response.status(201).json(res[0])
         }
       })
+    }
+  });
+});
+
+// Afficher les morceaux d'une playlist
+
+app.get('/playlists/:id/tracks', (request, response) => {
+  const playlistId = request.params.id;
+  connection.query('SELECT * FROM tracks WHERE playlist_id = ?', [playlistId], (err, res) => {
+    if (err) {
+      response.status(500).send('Erreur lors de la récupération des morceaux')
+    } else {
+      response.status(200).json(res)
     }
   });
 });
