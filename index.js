@@ -103,6 +103,23 @@ app.get('/track', (req, res) => {
   });
 });
 
+// en tant qu'utilisateur, je veux pouvoir supprimer une playlist
+app.delete('/playlist/:id', (req, res) => {
+  const idPlaylist = req.params.id;
+  connection.query('DELETE FROM playlist WHERE id = ?;', idPlaylist, (err, results) => {
+    if (err) {
+      res.status(500).json({
+        error: err.message,
+        sql: err.sql
+      });
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+
+
+
 // Lancement du serveur
 app.listen(process.env.PORT, (err) => {
   if (err) {
