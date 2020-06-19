@@ -115,9 +115,24 @@ app.delete('/playlists/:id', (request, response) => {
 
 // Modifier un morceau d'une playlist 
 
-/* app.put('/playlists/:id/tracks', (request, response) => {
-  const trackToUpdate = 
-}) */
+app.put('/playlists/:id/tracks/:id2', (request, response) => {
+  const playlistId = request.params.id;
+  const trackToUpdate = request.params.id2;
+  const formData = request.body;
+  connection.query('UPDATE tracks SET ? WHERE playlist_id = ? AND id = ?', [formData, playlistId, trackToUpdate], (err, res) => {
+    if (err) {
+      response.status(500).send('Erreur lors de la modification d\'un morceau')
+    } else {
+      connection.query('SELECT * FROM tracks WHERE id = ?', [trackToUpdate], (err2, res2) => {
+        if (err) {
+          response.status(500).send('Erreur lors de la récupération du morceau')
+        } else {
+          response.status(200).json(res2[0])
+        }
+      });
+    }
+  });
+});
 
 
 app.listen(port, (err) => {
