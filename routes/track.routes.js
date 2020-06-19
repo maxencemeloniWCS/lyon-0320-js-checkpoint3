@@ -59,4 +59,32 @@ router.put('/:id', (req, res) => {
   })
 })
 
+// tous les morceaux 
+router.get('/', (req, res) => {
+  let sql = 'SELECT * FROM track';
+  const sqlValues = [];
+  const title = req.query.title;
+  const artist = req.query.artist;
+  if (title && artist){
+    sql += ' WHERE title = ? AND artist = ?';
+    sqlValues.push(title, artist)
+  } else {
+    if (title) {
+      sql += ' WHERE title = ?';
+      sqlValues.push(title);
+    }
+    if (artist) {
+      sql += ' WHERE artist = ?';
+      sqlValues.push(artist);
+    }
+  }
+  db.query(sql, sqlValues, (err, results) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.json(results);
+    }
+  })
+})
+
 module.exports = router;

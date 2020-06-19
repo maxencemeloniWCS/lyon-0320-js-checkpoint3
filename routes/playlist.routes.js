@@ -61,4 +61,32 @@ router.put('/:id', (req, res) => {
   })
 })
 
+// toutes les playlists 
+router.get('/', (req, res) => {
+  let sql = 'SELECT * FROM playlist';
+  const sqlValues = [];
+  const title = req.query.title;
+  const genre = req.query.genre;
+  if (title && genre){
+    sql += ' WHERE title = ? AND genre = ?';
+    sqlValues.push(title, genre)
+  } else {
+    if (title) {
+      sql += ' WHERE title = ?';
+      sqlValues.push(title);
+    }
+    if (genre) {
+      sql += ' WHERE genre = ?';
+      sqlValues.push(genre);
+    }
+  }
+  db.query(sql, sqlValues, (err, results) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.json(results);
+    }
+  })
+})
+
 module.exports = router;
