@@ -5,6 +5,8 @@ const connection = require('./conf')
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+// TO TEST LAUNCH NODEMON INDEX.JS AND GO TO TEST.HTTP FILE TO TEST
+
 app.post('/playlist', (req, res) => {
   connection.query('insert into playlist set ?', req.body, (err, results) => {
     if (err) {
