@@ -109,17 +109,43 @@ app.put('/playlists/:id/tracks/:trackId', (req, res) => {
 // BONUS mamène
 // GET / playlists - ALL PLAYLISTS
 app.get('/playlists', (req, res) => {
-  connection.query('SELECT * from playlist', (err, results) => {
+  let sql = 'SELECT * FROM playlist ';
+  sqlValues = [];
+
+  if (req.query.genre) {
+    sql += 'WHERE genre = ?'
+    sqlValues.push(req.query.genre);
+  } 
+
+  connection.query(sql, sqlValues, (err, results) => {
     if (err) {
       console.log(err);
-      res.status(500).send('Erreur lors de la récupération des playlists');
+      res.status(404).send('Playlist not found');
     } else {
       res.json(results);
     }
-  });
-});
+  })
+})
 
-// GET / playlists - ALL PLAYLISTS
+// GET / playlists - ALL TRACKS
+app.get('/tracks', (req, res) => {
+  let sql = 'SELECT * FROM track ';
+  sqlValues = [];
+
+  if (req.query.artist) {
+    sql += 'WHERE artist = ?'
+    sqlValues.push(req.query.artist);
+  } 
+
+  connection.query(sql, sqlValues, (err, results) => {
+    if (err) {
+      console.log(err);
+      res.status(404).send('Track not found');
+    } else {
+      res.json(results);
+    }
+  })
+})
 
 
 app.listen(port, (err) => {
