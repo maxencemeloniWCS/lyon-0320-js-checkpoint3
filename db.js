@@ -23,6 +23,22 @@ class Database {
       });
     });
   }
+
+  escape(something) {
+    return this.connection.escape(something)
+  }
+
+  buildWhereClauseEq(params) {
+    let clause = ''
+    Object.keys(params).forEach(key => {
+      const val = params[key]
+      if (val) {
+        if (clause === '') clause = `WHERE ${key}=${this.escape(val)}`;
+        else clause += `AND ${key}=${this.escape(val)}`
+      }
+    })
+    return clause
+  } 
 }
 
 module.exports = (new Database()).init();

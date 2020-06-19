@@ -1,6 +1,11 @@
 const db = require('../db')
 
 class Palylist {
+  static async searchBy({title, genre}) {
+    let sql = "SELECT * from playlist "  + db.buildWhereClauseEq({title, genre})
+    return db.query(sql)
+  } 
+
   static async create({title, genre}) {
     return db.query('INSERT INTO playlist (title, genre) VALUES (?, ?)', [title, genre]).then(res => {
       return {id: res.insertId, title, genre}
@@ -18,7 +23,7 @@ class Palylist {
   }
 
   static async findTrackById(playlist_id, track_id) {
-    return db.query('SELECT * FROM track WHERE playlist_id=? AND id=?', [track_id, playlist_id]).then(res => res[0])
+    return db.query('SELECT * FROM track WHERE playlist_id=? AND id=?', [playlist_id, track_id]).then(res => res[0])
   }
 
   static async deleteById(id) {

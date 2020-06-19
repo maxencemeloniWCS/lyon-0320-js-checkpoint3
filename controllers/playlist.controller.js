@@ -1,6 +1,12 @@
 const Playlist = require('../models/playlist.model')
 
 class PlaylistController {
+  static async getSome(req, res) {
+    const {title, genre} = req.query
+    const playlists = await Playlist.searchBy({title, genre})
+    res.send(playlists)
+  }
+
   static async addTrack(req, res) {
     const {id} = req.params;
     const {title, artist, album_picture, youtube_url} = req.body

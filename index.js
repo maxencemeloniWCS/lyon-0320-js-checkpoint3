@@ -27,13 +27,8 @@ app.use((error, req, res, next) => {
 });
 
 // routes
-
-
-
-
-
-
 app.use('/playlists', require('./routes/playlist.routes'))
+app.use('/tracks', require('./routes/track.routes'))
 
 // server start
 app.set('x-powered-by', false);

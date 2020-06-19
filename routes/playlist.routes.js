@@ -3,6 +3,7 @@ const playlistRouter = express.Router()
 const PlaylistController = require('../controllers/playlist.controller')
 
 playlistRouter.post('/', PlaylistController.create)
+playlistRouter.get('/', PlaylistController.getSome)
 playlistRouter.get('/:id', PlaylistController.getOne)
 playlistRouter.patch('/:id', PlaylistController.updateOne)
 playlistRouter.delete('/:id', PlaylistController.deleteOne)
