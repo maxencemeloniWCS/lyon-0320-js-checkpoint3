@@ -7,8 +7,22 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//bonus 1
 app.get("/api/playlists", (req, res) => {
   connection.query("select * from playlist", (err, results) => {
+    if (err) {
+      res.status(500).json({
+        error: err.message,
+        sql: err.sql,
+      });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.get("/api/tracks", (req, res) => {
+  connection.query("select * from track", (err, results) => {
     if (err) {
       res.status(500).json({
         error: err.message,
@@ -91,18 +105,6 @@ app.get("/api/playlists/:id", (req, res) => {
 - en tant qu'utilisateur, je veux modifier un morceau d'une playlist. RIP*/
 
 //en tant qu'utilisateur, je veux créer et affecter un morceau à une playlist.
-app.get("/api/tracks", (req, res) => {
-  connection.query("select * from track", (err, results) => {
-    if (err) {
-      res.status(500).json({
-        error: err.message,
-        sql: err.sql,
-      });
-    } else {
-      res.json(results);
-    }
-  });
-});
 
 app.post("/api/tracks", (req, res) => {
   // récupération des données envoyées
@@ -219,7 +221,24 @@ app.put("/api/playlists/:id", (req, res) => {
   );
 });
 // en tant qu'utilisateur, je veux supprimer un morceau d'une playlist.
-
+app.delete("/api/playlists", (req, res) => {
+  let sql = "DELETE * FROM track";
+  const sqlValues = [];
+  if (req.query.playlist_id) {
+    sql += " WHERE track.playlist_id = ?";
+    sqlValues.push(req.query.playlist_id);
+  }
+  // send an SQL query to get all employees
+  connection.query(sql, sqlValues, (err, results) => {
+    if (err) {
+      // If an error has occurred, then the client is informed of the error
+      res.status(500).send(`An error occurred: ${err.message}`);
+    } else {
+      // If everything went well, we send the result of the SQL query as JSON
+      res.json(results);
+    }
+  });
+});
 ("RIP");
 // en tant qu'utilisateur, je veux modifier un morceau d'une playlist.
 ("RIP");
