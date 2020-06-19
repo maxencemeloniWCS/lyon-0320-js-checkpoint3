@@ -12,7 +12,7 @@ app.use(
     extended: true,
   })
 );
-
+// POST /playlists
 app.post("/playlists", (req, res) => {
   if (!req.body) {
     res
@@ -32,6 +32,18 @@ app.post("/playlists", (req, res) => {
     } else {
       newPlaylist.id = result.insertId;
       res.status(200).send(newPlaylist);
+    }
+  });
+});
+
+// GET /playlists
+app.get("/playlists", (req, res) => {
+  db.query("SELECT * FROM playlists", (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("Erreur lors de la récupération des playlists");
+    } else {
+      res.json(result);
     }
   });
 });
