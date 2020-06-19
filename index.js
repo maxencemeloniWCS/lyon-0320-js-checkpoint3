@@ -99,6 +99,26 @@ app.get('/playlists/:id/tracks', (request, response) => {
   });
 });
 
+// Modifier une playlist
+
+app.put('/playlists/:id', (request, response) => {
+  const playlistToUpdateId = request.params.id;
+  const formData = request.body;
+  connection.query('UPDATE playlist SET ? WHERE id = ?', [formData, playlistToUpdateId], (err, res) => {
+    if (err) {
+      response.status(500).send('Erreur lors de la modification d\'un morceau')
+    } else {
+      connection.query('SELECT * FROM playlist WHERE id = ?', [playlistToUpdateId], (err2, res2) => {
+        if (err2) {
+          response.status(500).send('Erreur lors de la récupération du morceau')
+        } else {
+          response.status(200).json(res2[0])
+        }
+      });
+    }
+  });
+});
+
 // Supprimer une playlist
 
 app.delete('/playlists/:id', (request, response) => {
@@ -123,7 +143,7 @@ app.put('/playlists/:id/tracks/:id2', (request, response) => {
       response.status(500).send('Erreur lors de la modification d\'un morceau')
     } else {
       connection.query('SELECT * FROM tracks WHERE id = ?', [trackToUpdate], (err2, res2) => {
-        if (err) {
+        if (err2) {
           response.status(500).send('Erreur lors de la récupération du morceau')
         } else {
           response.status(200).json(res2[0])
