@@ -48,6 +48,21 @@ app.get("/playlists", (req, res) => {
   });
 });
 
+// GET /playlists/:id
+app.get("/playlists/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  db.query("SELECT * FROM playlists WHERE id = ?", id, (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("Erreur lors de la récupération de la playlist");
+    } else if (result[0] === undefined) {
+      res.status(404).send("il n'y a pas de playlist ici !");
+    } else {
+      res.status(200).json(result[0]);
+    }
+  });
+});
+
 app.listen(port, (err) => {
   if (err) {
     throw new Error("Somthing bad happenned...");
