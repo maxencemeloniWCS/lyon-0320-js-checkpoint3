@@ -37,10 +37,10 @@ Content-Type: application/json
   "genre": "test"
 }
 
-### DELETE TRACK
+### DELETE TRACK FROM PLAYLIST
 DELETE http://localhost:3000/playlist/1/track/1
 
-### UPDATE TRACK
+### UPDATE TRACK FROM PLAYLIST
 PUT http://localhost:3000/playlist/1/track/1
 Content-Type: application/json
 
@@ -52,8 +52,19 @@ Content-Type: application/json
   "youtube_url": "test"
 }
 
-### READ ALL PLAYLIST
+### READ ALL PLAYLISTS
 GET http://localhost:3000/playlists
 
 ### READ ALL TRACKS
 GET http://localhost:3000/tracks
+
+### CREATE USER
+POST http://localhost:3000/user
+Content-Type: application/json
+
+{
+  "first_name": "test",
+  "last_name": "test",
+  "email": "test",
+  "password": "test"
+}

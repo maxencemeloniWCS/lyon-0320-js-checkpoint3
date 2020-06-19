@@ -145,6 +145,16 @@ app.get('/tracks', (req, res) => {
   })
 })
 
+app.post('/user', (req, res) => {
+  connection.query('insert into user set ?', req.body, (err, results) => {
+    if (err) {
+      res.status(500).send("Error creating user");
+    } else {
+      res.status(200).send(req.body)
+    }
+  });
+});
+
 app.listen(port, (err) => {
   if (err) {
     throw new Error('Something bad happened...')
