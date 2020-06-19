@@ -73,6 +73,23 @@ app.put('/api/playlist/:id', (req, res) => {
   });
 });
 
+// POST A NEW PLAYLIST
+
+app.post('/api/playlist', (req, res) => {
+
+  const formData = req.body;
+  console.log(req.body);
+  connection.query('INSERT INTO playlist SET ? WHERE id = ?', formData, (err, results) => {
+
+    if (err) {
+      console.log(err);
+      res.status(500).send("Erreur lors de l'édition d'une nouvelle playlist'");
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+
 // WHEN AN ERROR IS COMING ...
 
 app.listen(port, (err) => {
