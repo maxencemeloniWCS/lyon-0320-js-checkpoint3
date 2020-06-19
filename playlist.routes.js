@@ -52,6 +52,25 @@ router.get("/:id", (req, res) => {
   });
 });
 
+// GET /playlists/:id/tracks
+router.get("/:id/tracks", (req, res) => {
+  const id = parseInt(req.params.id);
+  db.query(
+    "SELECT * FROM tracks t JOIN playlists p ON t.playlist_id = ?",
+    id,
+    (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Erreur lors de la récupération de la playlist");
+      } else if (result[0] === undefined) {
+        res.status(404).send("il n'y a pas de playlist ici !");
+      } else {
+        res.status(200).json(result[0]);
+      }
+    }
+  );
+});
+
 // PUT /playlists/:id
 router.put("/:id", (req, res) => {
   if (!req.body) {

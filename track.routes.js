@@ -5,19 +5,30 @@ const db = require("./db");
 router.post("/", (req, res) => {
   if (!req.body) {
     res.status(400).send({ errorMessage: "track content can not be empty !" });
-  } else if (!req.body.title) {
+  } else if (!req.body.title || !req.body.playlist_id) {
     console.log(req.body.title);
-    res.status(400).send({ errorMessage: "track title can not be empty !" });
+    res
+      .status(400)
+      .send({ errorMessage: "track title && playlist_id can not be empty !" });
   }
   let newTrack = req.body;
+  const playlist_id = req.body.playlist_id;
+  newTrack.playlist_id = playlist_id;
   console.log(newTrack);
+  console.log(
+    "################################################################################"
+  );
+  console.log(
+    "ALLER MERCI LE SQL À LA MAIN !!!! J'AI UNE VIEILLE ERREUR DE CONTRAINTES SUR UN CLÉ ÉTRANGÈRE !!"
+  );
+  console.log(
+    "################################################################################"
+  );
   db.query("INSERT INTO tracks SET ?", newTrack, (err, result) => {
     if (err) {
       console.error(err);
       res.status(500).send({
         errorMessage: "Erreur lors de la sauvegarde d'une piste",
-        sqlError:
-          "set a playlist_id key with an integer value in the payload !",
       });
     } else {
       newTrack.id = result.insertId;
