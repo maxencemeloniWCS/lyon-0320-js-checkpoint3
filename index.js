@@ -84,11 +84,11 @@ app.get("/api/playlists/:id", (req, res) => {
   );
 });
 /* - en tant qu'utilisateur, je veux créer et affecter un morceau à une playlist. +1
-- en tant qu'utilisateur, je veux lister tous les morceaux d'une playlist. +0.5 
+- en tant qu'utilisateur, je veux lister tous les morceaux d'une playlist. +1 
 - en tant qu'utilisateur, je veux pouvoir supprimer une playlist. +1
 - en tant qu'utilisateur, je veux pouvoir modifier une playlist. +1 
-- en tant qu'utilisateur, je veux supprimer un morceau d'une playlist.
-- en tant qu'utilisateur, je veux modifier un morceau d'une playlist. */
+- en tant qu'utilisateur, je veux supprimer un morceau d'une playlist. RIP
+- en tant qu'utilisateur, je veux modifier un morceau d'une playlist. RIP*/
 
 //en tant qu'utilisateur, je veux créer et affecter un morceau à une playlist.
 app.get("/api/tracks", (req, res) => {
@@ -147,27 +147,7 @@ app.post("/api/tracks", (req, res) => {
 
 //- en tant qu'utilisateur, je veux lister tous les morceaux d'une playlist.
 
-// POURQUOI CA NE MARCHE PAS
-app.get("/api/tracks", (req, res) => {
-  let sql = "SELECT * FROM track";
-  const sqlValues = [];
-  if (req.query.playlist_id) {
-    sql += " WHERE playlist_id  = ?";
-    sqlValues.push(req.query.playlist_id);
-  }
-  // send an SQL query to get all employees
-  connection.query(sql, sqlValues, (err, results) => {
-    if (err) {
-      // If an error has occurred, then the client is informed of the error
-      res.status(500).send(`An error occurred: ${err.message}`);
-    } else {
-      // If everything went well, we send the result of the SQL query as JSON
-      res.json(results);
-    }
-  });
-});
-
-app.get("/api/tracks", (req, res) => {
+app.get("/api/playlists", (req, res) => {
   let sql = "SELECT * FROM track";
   const sqlValues = [];
   if (req.query.playlist_id) {
@@ -239,6 +219,7 @@ app.put("/api/playlists/:id", (req, res) => {
   );
 });
 // en tant qu'utilisateur, je veux supprimer un morceau d'une playlist.
+
 ("RIP");
 // en tant qu'utilisateur, je veux modifier un morceau d'une playlist.
 ("RIP");
