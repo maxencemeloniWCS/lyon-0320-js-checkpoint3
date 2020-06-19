@@ -176,8 +176,8 @@ app.get('/user/playlists/:id/listing', (req, res) => {
 
 app.get('/user/playlist', (req, res) => {
  
-  let sql = 'SELECT * FROM playlist';
-  const sqlValues = [];
+  let sql = 'SELECT * FROM playlist ';
+  sqlValues = [];
  
   if (req.query.title) {
  
@@ -185,26 +185,38 @@ app.get('/user/playlist', (req, res) => {
     sqlValues.push(req.query.title);
  
   }
- 
-  if (req.query.genre) {
- 
-    if (req.query.title) {
- 
-      sql += 'AND genre = ?';
- 
-    }else{
- 
-      sql += 'WHERE genre = ?';
-    }
-    sqlValues.push(req.query.genre);
+
+  if (req.query.genre && req.query.title) {
+    sql += 'WHERE title = ? AND genre = ?';
+    sqlValues.push(req.query.title, req.query.genre);
   }
+  // if (req.query.title) {
+ 
+  //   sql += 'WHERE title = ?';
+  //   sqlValues.push(req.query.title);
+ 
+  // }
+ 
+  // if (req.query.genre) {
+ 
+  //   if (req.query.title) {
+ 
+  //     sql += 'AND genre = ?';
+ 
+  //   }else{
+ 
+  //     sql += 'WHERE genre = ?';
+  //   }
+  //   sqlValues.push(req.query.genre);
+  // }
  
   connection.query(sql, sqlValues, (err, results) => {
  
     if (err) {
+      console.log(err);
       res.status(500).send(`An error occurred: ${err.message}`);
     } else {
-      res.json(results[0]);
+      res.json(results);
     }
   });
 });
@@ -220,19 +232,24 @@ app.get('/user/track', (req, res) => {
     sqlValues.push(req.query.title);
  
   }
- 
-  if (req.query.artist) {
- 
-    if (req.query.title) {
- 
-      sql += 'AND artist = ?';
- 
-    }else{
- 
-      sql += 'WHERE artist = ?';
-    }
-    sqlValues.push(req.query.artist);
+
+  if (req.query.genre || req.query.title) {
+    sql += 'WHERE title = ? AND genre = ?';
+    sqlValues.push(req.query.title, req.query.genre);
   }
+ 
+  // if (req.query.artist) {
+ 
+  //   if (req.query.title) {
+ 
+  //     sql += 'AND artist = ?';
+ 
+  //   }else{
+ 
+  //     sql += 'WHERE artist = ?';
+  //   }
+  //   sqlValues.push(req.query.artist);
+  // }
  
   connection.query(sql, sqlValues, (err, results) => {
  
@@ -260,20 +277,20 @@ app.delete('/user/playlists/:id', (req, res) => {
   });
 });
 
-// app.delete('/user/playlists/:id/delete-track/:id-track', (req, res) => {
+app.delete('/user/playlists/:id/delete-track/:id-track', (req, res) => {
 
-//   const idPlaylist = req.params.id;
-//   const idTrack = req.params.id-track;
+  const idPlaylist = req.params.id;
+  const idTrack = req.params.id-track;
 
-//   connection.query('DELETE t FROM track t JOIN playlist p ON t.playlist_id = p.id WHERE t.id = ? AND p.id', [idTrack, idPlaylist], err => {
-//     if (err) {
-//       console.log(err);
-//       res.status(500).send("Erreur lors de la suppression d'une musique");
-//     } else {
-//       res.sendStatus(200);
-//     }
-//   });
-// });
+  connection.query('DELETE t FROM track t JOIN playlist p ON t.playlist_id = p.id WHERE t.id = ? AND p.id', [idTrack, idPlaylist], err => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Erreur lors de la suppression d'une musique");
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
 
 app.delete('/user/playlists/:id/tracks/:trackId', (req, res) => {
   const track_id = req.params.trackId;
