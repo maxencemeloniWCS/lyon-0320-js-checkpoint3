@@ -88,6 +88,7 @@ app.post('/track/:playlist', (req, res) => {
 });
 
 // en tant qu'utilisateur, je veux lister tous les morceaux d'une playlist.
+// APPEL : /track?playlist=nn
 app.get('/track', (req, res) => {
   const idPlaylist = req.query.playlist;
   connection.query('SELECT * FROM track AS t JOIN playlist AS p ON p.id = t.playlist_id WHERE p.id = ?;', idPlaylist, (err, results) => {
@@ -103,6 +104,7 @@ app.get('/track', (req, res) => {
 });
 
 // en tant qu'utilisateur, je veux pouvoir supprimer une playlist
+// APPEL : /playlist/n
 app.delete('/playlist/:id', (req, res) => {
   const idPlaylist = req.params.id;
   connection.query('DELETE FROM playlist WHERE id = ?;', idPlaylist, (err, results) => {
@@ -194,6 +196,57 @@ app.put('/track/:id', (req, res) => {
           .status(200)
           .json(playlist);
       });
+    }
+  });
+});
+
+//
+// BONUS
+//
+
+// Créer deux routes permettant de récupérer :
+// toutes les playlists (par exemple /playlists)
+// tous les morceaux (/tracks), indépendamment de la playlist à laquelle ils sont associés.
+app.get('/playlists', (req, res) => {
+  connection.query('SELECT * FROM playlist;', (err, results) => {
+    if (err) {
+      res.status(500).json({
+        error: err.message,
+        sql: err.sql
+      });
+    } else {
+      res.status(200).json(results);
+    }
+  });
+});
+
+app.get('/tracks', (req, res) => {
+  connection.query('SELECT * FROM track;', (err, results) => {
+    if (err) {
+      res.status(500).json({
+        error: err.message,
+        sql: err.sql
+      });
+    } else {
+      res.status(200).json(results);
+    }
+  });
+});
+
+// Créer deux routes permettant de récupérer :
+// toutes les playlists (par exemple /playlists)
+// tous les morceaux (/tracks), indépendamment de la playlist à laquelle ils sont associés.
+// APPEL : /playlists?search=xx (où xx représente une partie du genre ou du nom de la playlist)
+app.get('/playlist2', (req, res) => {
+  const search = req.query.search;
+  connection.query('SELECT * FROM playlist WHERE title LIKE "%t%";', (err, results) => {
+    if (err) {
+      res.status(500).json({
+        error: err.message,
+        sql: err.sql 
+      });
+    } else {
+      res.status(200).json(results);
     }
   });
 });
