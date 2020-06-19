@@ -104,6 +104,22 @@ app.delete('/api/playlist/:id', (req, res) => {
   });
 });
 
+// PUT A PLAYLIST
+
+app.put('/api/playlist/:id', (req, res) => {
+  const idPlaylist = req.params.id;
+  const formData = req.body;
+  console.log(idPlaylist);
+  connection.query('UPDATE playlist SET ? WHERE id = ?', [formData, idPlaylist], err => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Erreur lors de la modification de la playlist");
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+
 // WHEN AN ERROR IS COMING ...
 
 app.listen(port, (err) => {
