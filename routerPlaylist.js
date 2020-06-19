@@ -49,7 +49,7 @@ routerPlaylist.get('/:id', (req, res) => {
 });
 
 //en tant qu'utilisateur, je veux pouvoir supprimer une playlist.
-routerPlaylist.delete('/playlist/:id', (req, res) => {
+routerPlaylist.delete('/:id', (req, res) => {
 
   // récupération des données envoyées
   const idplaylist = req.params.id;
@@ -66,7 +66,7 @@ routerPlaylist.delete('/playlist/:id', (req, res) => {
 //en tant qu'utilisateur, je veux pouvoir modifier une playlist.
 routerPlaylist.put('/:id',(req, res) => {
     if (!req.body) {
-      return res.status(422).json({ errors: errors.array() });
+      return res.status(422).json('error');
     }
     return connection.query('UPDATE playlist SET ? WHERE id= ?', [req.body, req.params.id], (err, results) => {
       if (err) {
