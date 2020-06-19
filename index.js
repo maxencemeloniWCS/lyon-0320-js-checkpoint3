@@ -119,7 +119,57 @@ app.put('/api/playlists/:id/tracks/:trackId', (req, res) => {
 });
 
 // BONUS
-// 
+// GET all playlists / Filter by genre
+
+app.get('/api/playlists', (req, res) => {
+  const genre = req.query.genre;
+  if (genre) {
+    connection.query('SELECT * FROM playlist WHERE genre = ?', genre, (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Erreur lors de la sélection des playlists");
+      } else {
+        res.status(200).json(results);
+      }
+    })
+  } else {
+    connection.query('SELECT * FROM playlist', (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Erreur lors de la sélection des playlists");
+      } else {
+        res.status(200).json(results);
+      }
+    })
+  }
+})
+
+// GET all tracks / Filter by artist
+
+app.get('/api/tracks', (req, res) => {
+  const artist = req.query.artist;
+  if (artist) {
+    connection.query('SELECT * FROM track WHERE artist = ?', artist, (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Erreur lors de la sélection des morceaux");
+      } else {
+        res.status(200).json(results);
+      }
+    })
+  } else {
+    connection.query('SELECT * FROM track', (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Erreur lors de la sélection des morceaux");
+      } else {
+        res.status(200).json(results);
+      }
+    })
+  }
+})
+
+///////////////////////////////////////////////////////////////
 
 app.listen(port, (err) => {
   if (err) {
