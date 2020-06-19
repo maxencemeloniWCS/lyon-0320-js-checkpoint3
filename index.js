@@ -35,7 +35,7 @@ app.get('/playlists/:id', (req, res) => {
 // en tant qu'utilisateur, je veux créer et affecter un morceau à une playlist.
 app.post('/playlists/:id/tracks', (req, res) => {
   const formData = req.body;
-  connection.query('INSERT INTO track SET ?', formData, (err, results) => {
+  connection.query('INSERT INTO track SET ? WHERE playlist_id = ?', [formData, req.params.id], (err, results) => {
     if (err) {
       console.log(err);
       res.status(500).send("Erreur lors de la création du morceau");
@@ -96,7 +96,7 @@ app.delete('/playlists/:id/tracks/:trackId', (req, res) => {
 
 // en tant qu'utilisateur, je veux modifier un morceau d'une playlist.
 app.put('/playlists/:id/tracks/:trackId', (req, res) => {
-  connection.query('UPDATE track SET ? WHERE id = ?', [req.body, req.params.trackId], (err, results) => {
+  connection.query('UPDATE track SET ? WHERE playlist_id = ? AND WHERE id = ?', [req.body, req.params.id, req.params.trackId], (err, results) => {
     if (err) {
       console.log(err);
       res.status(500).send("Erreur lors de la suppression du morceau");
