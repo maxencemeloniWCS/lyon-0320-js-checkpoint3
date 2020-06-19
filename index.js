@@ -62,7 +62,6 @@ app.get('/playlist/:id', (req, res) => {
 app.post('/track/:playlist', (req, res) => {
   const idPlaylist = req.params.playlist; // récupère l'id de la playlist
   const data = { ...req.body, playlist_id: idPlaylist }; // combine les données du body + l'id playlist
-  console.log(data);
   // connexion à la base de données, et insertion d'une piste
   connection.query('INSERT INTO track SET ?', data, (err, results) => {
     if (err) {
@@ -114,6 +113,39 @@ app.delete('/playlist/:id', (req, res) => {
       });
     } else {
       res.sendStatus(200);
+    }
+  });
+});
+
+// en tant qu'utilisateur, je veux pouvoir modifier une playlist.
+// BESOINS:
+// - id de la playlist à modifier dans l'URL
+// - données dans le body
+app.put('/playlist/:playlist', (req, res) => {
+  const idPlaylist = req.params.playlist; // récupère l'id de la playlist
+  const data = req.body; // combine les données du body + l'id playlist
+  console.log(data);
+  // connexion à la base de données, et insertion d'une piste
+  connection.query('UPDATE playlist SET ? WHERE id = ?', [data, idPlaylist], (err, results) => {
+    if (err) {
+      // Si une erreur est survenue, alors on informe l'utilisateur de l'erreur
+      console.log(err);
+      res.status(500).send('Erreur lors de la modification de la playlist');
+    } else {
+      // We use the insertId attribute of results to build the WHERE clause
+      return connection.query('SELECT * FROM playlist WHERE id = ?', idPlaylist, (err2, records) => {
+        if (err2) {
+          return res.status(500).json({
+            error: err2.message,
+            sql: err2.sql,
+          });
+        }
+        // If all went well, records is an array, from which we use the 1st item
+        const playlist = records[0];
+        return res
+          .status(200)
+          .json(playlist);
+      });
     }
   });
 });
