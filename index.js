@@ -42,7 +42,7 @@ app.post('/playlist', (req, res) => {
 });
 
 app.get('/playlist/:id', (req, res) => {
-    const idPlaylist = req.body[0]
+    const idPlaylist = req.params.id
     connection.query('SELECT * from playlist WHERE id = ?', [idPlaylist], (err, results) => {
         if (err) {
             res.status(500).send('Erreur lors de la récupération de la playlist');
@@ -64,7 +64,7 @@ app.get('/playlist/name', (req, res) => {
 
 
 app.delete('/playlist/:id', (req, res) => {
-    const idPlaylist = req.body.id;
+    const idPlaylist = req.pams.id;
     connection.query('DELETE FROM playlist WHERE id = ?', [idPlaylist], err => {
         if (err) {
             console.log(err);
@@ -76,7 +76,7 @@ app.delete('/playlist/:id', (req, res) => {
 });
 
 app.put('/playlist/:id', (req, res) => {
-    const idPlaylist = req.body.id;
+    const idPlaylist = req.params.id;
     const formData = req.body;
     connection.query('UPDATE playlist SET ? WHERE id = ?', [formData, idPlaylist], err => {
         if (err) {
@@ -90,7 +90,7 @@ app.put('/playlist/:id', (req, res) => {
 });
 
 app.delete('/track/:id', (req, res) => {
-    const idTrack = req.body.id;
+    const idTrack = req.params.id;
     connection.query('DELETE * FROM track WHERE id = ?', [idTrack], err => {
         if (err) {
             console.log(err);
