@@ -20,7 +20,14 @@ app.post('/playlists', (request, response) => {
     if (err) {
       response.status(500).send("Erreur lors de la récupération des données de la playlist")
     } else {
-      response.sendStatus(200)
+      const newPlaylistId = results.insertId;
+      connection.query('SELECT * FROM playlist WHERE id = ?', [newPlaylistId], (err2, res) => {
+        if (err) {
+          response.status(500).send("Erreur lors de la récupération des données de la playlist")
+        } else {
+          response.status(200).json(res[0])
+        }
+      })
     }
   });
 });
