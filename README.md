@@ -32,14 +32,14 @@ Le but ici est de créer le backend Node / Express.
 
 Voici les user stories qui t'indiquent quelles routes tu vas devoir implémenter sur ton backend, et quelles requêtes SQL vont devoir être exécutées :
 
-- en tant qu'utilisateur, je veux pouvoir créer une nouvelle playlist.
-- en tant qu'utilisateur, je veux pouvoir consulter une playlist en renseignant son id dans l'url (juste ses données propres, pas les pistes associées).
-- en tant qu'utilisateur, je veux créer et affecter un morceau à une playlist.
-- en tant qu'utilisateur, je veux lister tous les morceaux d'une playlist.
-- en tant qu'utilisateur, je veux pouvoir supprimer une playlist.
-- en tant qu'utilisateur, je veux pouvoir modifier une playlist.
-- en tant qu'utilisateur, je veux supprimer un morceau d'une playlist.
-- en tant qu'utilisateur, je veux modifier un morceau d'une playlist.
+- //en tant qu'utilisateur, je veux pouvoir créer une nouvelle playlist.
+- //en tant qu'utilisateur, je veux pouvoir consulter une playlist en renseignant son id dans l'url (juste ses données propres, pas les pistes associées).
+- //en tant qu'utilisateur, je veux créer et affecter un morceau à une playlist.
+-// en tant qu'utilisateur, je veux lister tous les morceaux d'une playlist.
+-// en tant qu'utilisateur, je veux pouvoir supprimer une playlist.
+-// en tant qu'utilisateur, je veux pouvoir modifier une playlist.
+- //en tant qu'utilisateur, je veux supprimer un morceau d'une playlist.
+- //en tant qu'utilisateur, je veux modifier un morceau d'une playlist.
 
 Tu devras réspecter les règles suivantes sur tes routes :
 - Le body des **requêtes HTTP** doit être au **format JSON**
