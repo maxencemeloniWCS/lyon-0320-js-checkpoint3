@@ -1,3 +1,5 @@
+Vianney bouault
+
 # Checkpoint n°3 - JS - **4h**
 
 Pour ce travail tu as 4h devant toi. Ce checkpoint n'est pas un examen, il va nous permettre de valider tes compétences, essaye donc de le faire au maximum de ton côté.
