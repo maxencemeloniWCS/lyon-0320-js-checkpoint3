@@ -120,6 +120,20 @@ app.put('/api/playlist/:id', (req, res) => {
   });
 });
 
+// DELETE A TRACK FROM THE PLAYLIST
+
+app.delete('/api/playlist/:playlist_id', (req, res) => {
+  const idPlaylist = req.params.id;
+  connection.query('DELETE FROM playlist WHERE playlist_id = ?', [idPlaylist], err => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Erreur lors de la suppression d'une playlist");
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+
 // WHEN AN ERROR IS COMING ...
 
 app.listen(port, (err) => {
