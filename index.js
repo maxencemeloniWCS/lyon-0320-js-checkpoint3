@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const routerPlaylist = require('./routerPlaylist');
 const routerTrack = require('./routerTrack');
+const routerUser = require('./routerUser');
 const connection = require('./config')
 const port = 7777;
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({
 
 app.use('/playlist',routerPlaylist);
 app.use('/track',routerTrack);
+app.use('/user',routerUser);
 
 
 
