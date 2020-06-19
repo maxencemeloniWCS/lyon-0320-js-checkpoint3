@@ -13,6 +13,8 @@ app.use(express.urlencoded({
 app.get('/', (request, response) => {
   response.send('Bienvenue sur ma page de playlist');
 });
+
+// Envoyer une nouvelle playlist
  
 app.post('/playlists', (request, response) => {
   const formData = request.body;
@@ -22,7 +24,7 @@ app.post('/playlists', (request, response) => {
     } else {
       const newPlaylistId = results.insertId;
       connection.query('SELECT * FROM playlist WHERE id = ?', [newPlaylistId], (err2, res) => {
-        if (err) {
+        if (err2) {
           response.status(500).send("Erreur lors de la récupération des données de la playlist")
         } else {
           response.status(200).json(res[0])
@@ -32,6 +34,8 @@ app.post('/playlists', (request, response) => {
   });
 });
 
+// Récupérer une playlist par son Id
+
 app.get('/playlists/:id', (request, response) => {
   const playlistId = request.params.id;
   connection.query('SELECT * FROM playlist WHERE id = ?', [playlistId], (err, results) => {
@@ -39,6 +43,26 @@ app.get('/playlists/:id', (request, response) => {
       response.status(500).send("Erreur lors de la récuération de la playlist")
     } else {
       response.json(results[0])
+    }
+  });
+});
+
+// Créer et affecter un morceau à une playlist
+
+app.post('/tracks', (request, response) => {
+  const formData = request.body;
+  connection.query('INSERT INTO tracks SET ?', formData, (err, res) => {
+    if (err) {
+      response.status(500).send("Erreur lors de la récupération des données du morceau")
+    } else {
+      const newTrackId = res.insertId;
+      connection.query('SELECT * FROM tracks WHERE id = ?', [newTrackId], (err2, res) => {
+        if (err2) {
+          response.status(500).send("Erreur lors de la récupération des données du morceau")
+        } else {
+          response.status(200).json(res[0])
+        }
+      })
     }
   });
 });
