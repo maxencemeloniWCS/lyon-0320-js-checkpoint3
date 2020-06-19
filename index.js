@@ -1,5 +1,6 @@
 const express = require('express');
 const connection = require('./conf');
+const { query } = require('express');
 const app = express();
 const port = 3000;
 
@@ -12,6 +13,19 @@ app.use(express.urlencoded({
 
 app.get('/', (request, response) => {
   response.send('Bienvenue sur ma page de playlist');
+});
+
+
+// Récupérer toutes les playlists
+
+app.get('/playlists', (request, response) => {
+  connection.query('SELECT * FROM playlist', (err, results) => {
+    if (err) {
+      response.status(500).send('Erreur lors de la récupération de toutes les playlists')
+    } else {
+      response.status(200).json(results)
+    }
+  });
 });
 
 // Envoyer une nouvelle playlist
@@ -41,7 +55,9 @@ app.get('/playlists/:id', (request, response) => {
   const playlistId = request.params.id;
   connection.query('SELECT * FROM playlist WHERE id = ?', [playlistId], (err, results) => {
     if (err) {
-      response.status(500).send("Erreur lors de la récuération de la playlist")
+      response.status(500).send("Erreur lors de la récupération de la playlist")
+    } else if (results.length === 0) {
+      response.status(404).send('Cette playlist n\'existe pas !')
     } else {
       response.json(results[0])
     }
@@ -75,11 +91,34 @@ app.get('/playlists/:id/tracks', (request, response) => {
   connection.query('SELECT * FROM tracks WHERE playlist_id = ?', [playlistId], (err, res) => {
     if (err) {
       response.status(500).send('Erreur lors de la récupération des morceaux')
+    } else if (res.length === 0) {
+      response.status(404).send('Cette playlist n\'existe pas !')
     } else {
       response.status(200).json(res)
     }
   });
 });
+
+// Supprimer une playlist
+
+app.delete('/playlists/:id', (request, response) => {
+  const playlistToDeleteId = request.params.id;
+  console.log(playlistToDeleteId)
+  connection.query('DELETE FROM playlist WHERE id = ?', [playlistToDeleteId], err => {
+    if (err) {
+      response.status(500).send('Erreur lors de la suppression d\'une playlist')
+    } else {
+      response.sendStatus(200)
+    }
+  });
+});
+
+// Modifier un morceau d'une playlist 
+
+/* app.put('/playlists/:id/tracks', (request, response) => {
+  const trackToUpdate = 
+}) */
+
 
 app.listen(port, (err) => {
   if (err) {
