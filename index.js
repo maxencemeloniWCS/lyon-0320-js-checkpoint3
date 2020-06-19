@@ -147,6 +147,56 @@ app.get('/tracks', (req, res) => {
   })
 })
 
+// SUPERBONUS mamène
+// en tant qu'utilisateur, je veux créer mon profil
+app.post('/users', (req, res) => {
+  const formData = req.body;
+  connection.query('INSERT INTO user SET ?', formData, (err, results) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Erreur lors de la création de l'utilisateur");
+    } else {
+      res.json(req.body);
+    }
+  });
+});
+
+// en tant qu'utilisateur, je veux ajouter une playlist (y compris d'autres utilisateurs) à mes favoris
+app.post('/users/:userID/favorite-playlists', (req, res) => {
+  connection.query('INSERT INTO user_playlist SET user_id = ?, ?', [req.params.userID, req.body], (err, results) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send(`Erreur lors de l'ajout aux favoris de la playlist pour l'utilisateur ${req.params.userID}`);
+    } else {
+      res.json(req.body);
+    }
+  });
+});
+
+// en tant qu'utilisateur, je veux enlever une playlist de mes favoris
+app.delete('/users/:userID/favorite-playlists/:playlistID', (req, res) => {
+  connection.query('DELETE FROM user_playlist WHERE user_id = ? AND playlist_id = ? ', [req.params.userID, req.params.playlistID], (err, results) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send(`Erreur lors de la suppression de la playlist ${req.params.playlistID} pour l'utilisateur ${req.params.userID}`);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+
+// en tant qu'utilisateur, je veux pouvoir trouver toutes les playlists contenant des morceaux d'un certain artiste.
+app.get('/get-playlists', (req, res) => {
+
+  connection.query('SELECT playlist.title, playlist.genre FROM playlist LEFT JOIN track ON playlist.id = track.playlist_id WHERE artist = ?', req.query.artist, (err, results) => {
+    if (err) {
+      console.log(err);
+      res.status(404).send(`Playlists not found for artist ${req.query.artist}`);
+    } else {
+      res.json(results);
+    }
+  })
+})
 
 app.listen(port, (err) => {
   if (err) {
