@@ -65,7 +65,7 @@ app.put('/playlist/:id', (req, res) => {
   })
 })
 
-app.delete('/track/:id', (req, res) => {
+app.delete('/playlist/:id/track/:id', (req, res) => {
   connection.query('delete from track where id = ?', req.params.id, err => {
     if (err) {
       res.status(500).send('Error deleting the track')
@@ -75,12 +75,72 @@ app.delete('/track/:id', (req, res) => {
   })
 })
 
-app.put('/track/:id', (req, res) => {
+app.put('/playlist/:id/track/:id', (req, res) => {
   connection.query('update track set ? where id = ?', [req.body, req.params.id], err => {
     if (err) {
       res.status(500).send('Error editing the track')
     } else {
       res.status(200).send(req.body)
+    }
+  })
+})
+
+app.get('/playlists', (req, res) => {
+  connection.query('select * from playlist', (err, results) => {
+    if (err) {
+      res.status(500).send('Error retrieving playlists')
+    } else {
+      res.status(200).send(results)
+    }
+  })
+})
+
+app.get('/tracks', (req, res) => {
+  connection.query('select * from track', (err, results) => {
+    if (err) {
+      res.status(500).send('Error retrieving tracks')
+    } else {
+      res.status(200).send(results)
+    }
+  })
+})
+
+app.get('/playlists', (req, res) => {
+  let sql = 'select * from playlist'
+  const sqlValues = []
+  if (req.query.title) {
+    sql += 'where title = ?'
+    sqlValues.push(req.query.title)
+  }
+  if (req.query.genre) {
+    sql += 'where genre = ?'
+    sqlValues.push(req.query.genre)
+  }
+  connection.query(sql, sqlValues, (err, results) => {
+    if (err) {
+      res.status(500).send(`An error occurred: ${err.message}`)
+    } else {
+      res.json(results)
+    }
+  })
+})
+
+app.get('/tracks', (req, res) => {
+  let sql = 'select * from track'
+  const sqlValues = []
+  if (req.query.title) {
+    sql += 'where title = ?'
+    sqlValues.push(req.query.title)
+  }
+  if (req.query.artist) {
+    sql += 'where artist = ?'
+    sqlValues.push(req.query.artist)
+  }
+  connection.query(sql, sqlValues, (err, results) => {
+    if (err) {
+      res.status(500).send(`An error occurred: ${err.message}`)
+    } else {
+      res.json(results)
     }
   })
 })
