@@ -51,6 +51,19 @@ routerTrack.get('/playlist/:id', (req, res) => {
   });
 });
 
+// Toutes les pistes
+routerTrack.get('/', (req, res) => {
+  connection.query('SELECT * FROM track', (err, results) => {
+    if (err) {
+      return res.status(500).send(`An error occurred: ${err.message}`);
+    }
+    if (results.length === 0) {
+      return res.status(404).send('playlist not found');
+    }
+    return res.json(results);
+  });
+});
+
 // en tant qu'utilisateur, je veux supprimer un morceau d'une playlist.
 routerTrack.delete('/:id', (req, res) => {
 

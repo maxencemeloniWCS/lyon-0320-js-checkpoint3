@@ -94,4 +94,36 @@ routerPlaylist.put('/:id',(req, res) => {
   }
 );
 
+// routerPlaylist.get('/', (req, res) => {
+//   connection.query('SELECT * FROM playlist', (err, results) => {
+//     if (err) {
+//       return res.status(500).send(`An error occurred: ${err.message}`);
+//     }
+//     if (results.length === 0) {
+//       return res.status(404).send('playlist not found');
+//     }
+//     return res.json(results);
+//   });
+// });
+
+routerPlaylist.get('/', (req, res) => {
+  let sql = 'SELECT * FROM playlist';
+  const sqlValues = [];
+  if (req.query.title) {
+    sql += ' WHERE title = ?';
+    sqlValues.push(req.query.rating);
+  }
+  if (req.query.genre) {
+    sql += ' WHERE genre = ?';
+    sqlValues.push(req.query.genre);
+  }
+  connection.query(sql, sqlValues, (err, results) => {
+    if (err) {
+      res.status(500).send(`An error occurred: ${err.message}`);
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 module.exports = routerPlaylist;
