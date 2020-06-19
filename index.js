@@ -41,7 +41,7 @@ app.post('/playlist', (req, res) => {
 
 // en tant qu'utilisateur, je veux pouvoir consulter une playlist en renseignant son id
 // dans l'url (juste ses données propres, pas les pistes associées).
-app.get ('/playlist/:id', (req, res) => {
+app.get('/playlist/:id', (req, res) => {
   const idPlaylist = req.params.id;
   connection.query('SELECT * FROM playlist WHERE id = ?', idPlaylist, (err, results) => {
     if (err) {
@@ -86,7 +86,22 @@ app.post('/track/:playlist', (req, res) => {
       });
     }
   });
-})
+});
+
+// en tant qu'utilisateur, je veux lister tous les morceaux d'une playlist.
+app.get('/track', (req, res) => {
+  const idPlaylist = req.query.playlist;
+  connection.query('SELECT * FROM track AS t JOIN playlist AS p ON p.id = t.playlist_id WHERE p.id = ?;', idPlaylist, (err, results) => {
+    if (err) {
+      res.status(500).json({
+        error: err.message,
+        sql: err.sql
+      });
+    } else {
+      res.status(200).json(results);
+    }
+  });
+});
 
 // Lancement du serveur
 app.listen(process.env.PORT, (err) => {
