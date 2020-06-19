@@ -22,7 +22,18 @@ app.post('/playlists', (request, response) => {
     } else {
       response.sendStatus(200)
     }
-  })
+  });
+});
+
+app.get('/playlists/:id', (request, response) => {
+  const playlistId = request.params.id;
+  connection.query('SELECT * FROM playlist WHERE id = ?', [playlistId], (err, results) => {
+    if (err) {
+      response.status(500).send("Erreur lors de la récuération de la playlist")
+    } else {
+      response.json(results[0])
+    }
+  });
 });
 
 app.listen(port, (err) => {
