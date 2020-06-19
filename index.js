@@ -92,6 +92,21 @@ app.put("/playlists/:id", (req, res) => {
   );
 });
 
+// DELETE /playlists/:id
+app.delete("/playlists/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  db.query("DELETE FROM playlists WHERE id = ?", id, (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("Erreur lors de la suppression de la playlist");
+    } else if (result === undefined) {
+      res.status(404).send("il n'y a pas de playlist ici !");
+    } else {
+      res.status(200).send("Playlist supprimée avec succès !");
+    }
+  });
+});
+
 app.listen(port, (err) => {
   if (err) {
     throw new Error("Somthing bad happenned...");
