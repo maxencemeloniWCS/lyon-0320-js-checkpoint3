@@ -1,0 +1,23 @@
+{
+  "name": "lyon-0520-js-checkpoint3",
+  "version": "1.0.0",
+  "description": "checkpoint3 nodeJS AB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxencemeloniWCS/lyon-0520-js-checkpoint3.git"
+  },
+  "keywords": [
+    "nodeJS",
+    "mySQL"
+  ],
+  "author": "alyson b",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maxencemeloniWCS/lyon-0520-js-checkpoint3/issues"
+  },
+  "homepage": "https://github.com/maxencemeloniWCS/lyon-0520-js-checkpoint3#readme"
+}
