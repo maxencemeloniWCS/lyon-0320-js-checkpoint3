@@ -15,7 +15,7 @@ router.post("/", (req, res) => {
           if (err) {
             sqlError(res, err);
           } else {
-            res.status(200).json(results);
+            res.status(201).json(results);
           }
         }
       );
