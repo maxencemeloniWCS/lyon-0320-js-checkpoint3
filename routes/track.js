@@ -39,7 +39,7 @@ router.get("/", (req, res) => {
 
 // en tant qu'utilisateur, je veux supprimer un morceau d'une playlist.
 router.delete("/:id", (req, res) => {
-  let request = "DELETE FROM track WHERE playlist_id=?";
+  let request = "DELETE FROM track WHERE id=?";
   mysql.query(request, req.params.id, (err, result) => {
     if (err) {
       res.status(500).send({ err });
