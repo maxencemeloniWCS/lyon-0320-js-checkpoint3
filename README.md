@@ -1,4 +1,4 @@
-# Checkpoint n°3 - JS - **4h**
+# Checkpoint n°3 - JS - **4h** Lyon Alexandra Lhermitte
 
 Pour ce travail tu as 4h devant toi. Ce checkpoint n'est pas un examen, il va nous permettre de valider tes compétences, essaye donc de le faire au maximum de ton côté.
 Ce checkpoint est très consistant, si tu n'arrives pas à tout faire ce n'est pas grave, fais de ton mieux ;)
@@ -32,11 +32,11 @@ Le but ici est de créer le backend Node / Express.
 
 Voici les user stories qui t'indiquent quelles routes tu vas devoir implémenter sur ton backend, et quelles requêtes SQL vont devoir être exécutées :
 
-- en tant qu'utilisateur, je veux pouvoir créer une nouvelle playlist.
+- en tant qu'utilisateur, je veux pouvoir créer une nouvelle playlist.OK
 - en tant qu'utilisateur, je veux pouvoir consulter une playlist en renseignant son id dans l'url (juste ses données propres, pas les pistes associées).
 - en tant qu'utilisateur, je veux créer et affecter un morceau à une playlist.
-- en tant qu'utilisateur, je veux lister tous les morceaux d'une playlist.
-- en tant qu'utilisateur, je veux pouvoir supprimer une playlist.
+- en tant qu'utilisateur, je veux lister tous les morceaux d'une playlist.OK
+- en tant qu'utilisateur, je veux pouvoir supprimer une playlist.OK
 - en tant qu'utilisateur, je veux pouvoir modifier une playlist.
 - en tant qu'utilisateur, je veux supprimer un morceau d'une playlist.
 - en tant qu'utilisateur, je veux modifier un morceau d'une playlist.
