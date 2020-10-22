@@ -45,13 +45,32 @@ app.post("/playlist", (req, res) => {
 app.get("/playlist/:id", (req, res) => {
   const idPlaylist = req.params.id;
   console.log(idPlaylist);
-  db.query("SELECT * FROM playlist WHERE id = ?", [idPlaylist], (err, results) => {
-    if (err) {
-      res.status(500).send(`An error occurred: ${err.message}`);
-    } else if (results.length === 0) {
-      res.status(404).send("Movie not found");
+  db.query(
+    "SELECT * FROM playlist WHERE id = ?",
+    [idPlaylist],
+    (err, results) => {
+      if (err) {
+        res.status(500).send(`An error occurred: ${err.message}`);
+      } else if (results.length === 0) {
+        res.status(404).send("Movie not found");
+      } else {
+        res.json(results[0]);
+      }
+    }
+  );
+});
+
+//en tant qu'utilisateur, je veux créer et affecter un morceau à une playlist
+const playlists = [];
+app.post("/track", (req, res, next) => {
+  const receivedTrack = req.body;
+  db.query(`INSERT INTO track SET ?`, [receivedTrack], (err) => {
+    if (receivedTrack) {
+      playlists.push(receivedTrack);
+      res.status(201).send(receivedTrack);
     } else {
-      res.json(results[0]);
+      res.status(400).send();
     }
   });
 });
+
