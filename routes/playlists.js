@@ -175,6 +175,41 @@ router.put("/:id1/tracks/:id2", (req, res) => {
 });
 
 router.get("/", (req, res) => {
+  if (req.query.title) {
+    connection.query(
+      "SELECT id, title, genre FROM playlist WHERE title = ?",
+      [req.query.title],
+      (err, results) => {
+        if (err) {
+          res.status(500).send({
+            error: err.message,
+            sql: err.sql,
+          });
+        } else if (results != "") {
+          res.status(200).json(results);
+        } else {
+          res.status(404);
+        }
+      }
+    );
+  } else if (req.query.genre) {
+    connection.query(
+      "SELECT id, title, genre FROM playlist WHERE genre = ?",
+      [req.query.genre],
+      (err, results) => {
+        if (err) {
+          res.status(500).send({
+            error: err.message,
+            sql: err.sql,
+          });
+        } else if (results != "") {
+          res.status(200).json(results);
+        } else {
+          res.sendStatus(404);
+        }
+      }
+    );
+  }
   connection.query("SELECT id, title, genre FROM playlist", (err, results) => {
     if (err) {
       res.status(500).send({
