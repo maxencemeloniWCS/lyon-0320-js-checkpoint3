@@ -7,6 +7,7 @@ app.get("/", (req, res) => {
     res.send("Bienvenu dans la Playlist"); 
 }); 
 
+//Les requetes GET-----------------------------------------------------------------------------------------------------
 
 //Récuperer la liste des toutes les pistes (tracks):
 
@@ -88,6 +89,9 @@ app.get("/playlists/:title", (req, res) => {
     })
 })
 
+
+// Les requetes Post :-----------------------------------------------------------------------------------------------------
+
 // Ajouter une piste :
 
 app.post("/tracks", (req, res) => {
@@ -119,7 +123,10 @@ app.post("/playlists", (req, res) => {
     })
 })
 
+//Les requetes PUT ---------------------------------------------------------------------------------------------------
+
 // modifier une piste :
+
 app.put("/tracks/:id", (req, res)=> {
     const idTrack = parseInt(req.params.id);
     const dataTrack = req.body; 
@@ -145,6 +152,8 @@ app.put("/playlists/:id", (req, res)=> {
         }
     })
 })
+
+// les requetes DELETE -------------------------------------------------------------------------------------------
 
 // supprimer une piste : 
 app.delete("/tracks/:id", (req, res) => {
