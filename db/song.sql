@@ -33,3 +33,45 @@ FOREIGN KEY
         ON
 DELETE CASCADE)
 ;
+
+
+CREATE TABLE `song`.`user`
+(
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `first_name` VARCHAR
+(128) NOT NULL,
+  `last_name` VARCHAR
+(128) NOT NULL,
+`email` VARCHAR
+(128) NOT NULL,
+`password` VARCHAR
+(128) NOT NULL,
+  PRIMARY KEY
+(`id`));
+
+ALTER TABLE `song`.`playlist`
+ADD owner_id INT,
+ADD FOREIGN KEY
+(owner_id)
+        REFERENCES user
+(id)
+        ON
+DELETE CASCADE;
+
+
+CREATE TABLE `song`.`user_playlist`
+(
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `playlist_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
+FOREIGN KEY
+(playlist_id)
+        REFERENCES playlist
+(id),
+FOREIGN KEY
+(user_id)
+        REFERENCES user
+(id),
+  PRIMARY KEY
+(`id`));
+

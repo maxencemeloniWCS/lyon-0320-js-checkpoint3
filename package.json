@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/maxencemeloniWCS/lyon-0520-js-checkpoint3/issues"
   },
-  "homepage": "https://github.com/maxencemeloniWCS/lyon-0520-js-checkpoint3#readme"
+  "homepage": "https://github.com/maxencemeloniWCS/lyon-0520-js-checkpoint3#readme",
+  "dependencies": {
+    "express-validator": "^6.6.1"
+  }
 }

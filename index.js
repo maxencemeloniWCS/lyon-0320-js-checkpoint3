@@ -8,9 +8,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 const playlistsRouter = require("./routes/playlists");
 const tracksRouter = require("./routes/tracks");
+const usersRouter = require("./routes/users");
 
 app.use("/playlists", playlistsRouter);
 app.use("/tracks", tracksRouter);
+app.use("/users", usersRouter);
 
 app.listen(process.env.PORT, (err) => {
   if (err) {
