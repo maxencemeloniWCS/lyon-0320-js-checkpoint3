@@ -35,13 +35,6 @@ app.post("/playlist", (req, res) => {
 
 //en tant qu'utilisateur, je veux pouvoir consulter une playlist en renseignant son id dans l'url (juste ses données propres, pas les pistes associées).
 
-// app.use(express.json());
-// app.use(
-//   express.urlencoded({
-//     extended: true,
-//   })
-// );
-
 app.get("/playlist/:id", (req, res) => {
   const idPlaylist = req.params.id;
   console.log(idPlaylist);
@@ -81,7 +74,7 @@ app.get("/tracks", (req, res) => {
     if (err) {
       res.status(500).send(`An error occurred`);
     } else {
-      res.json(results);
+      res.status(200).json(results);
     }
   });
 });
@@ -113,7 +106,7 @@ app.put("/playlist/:id", (req, res) => {
         console.log(err);
         res.status(500).send("Erreur lors de la modification d'une playlist");
       } else {
-        res.json(200);
+        res.status(200).send("Modification playlist ok");
       }
     }
   );
