@@ -173,9 +173,9 @@ app.delete("/tracks/:id", (req, res) => {
 
 app.delete("/playlists/:id", (req, res) => {
 
-    const dataForm = req.params.id;
+    const dataPlaylist = req.params.id;
 
-    connexion.query("DELETE FROM playList WHERE id = ?", dataForm, (err, results) => {
+    connexion.query("DELETE FROM playList WHERE id = ?", dataPlaylist, (err, results) => {
         if (err) {
             console.log(err);
             res.status(500).send("Erreur lors de la supression d'une playList");
