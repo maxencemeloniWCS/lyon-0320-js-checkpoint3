@@ -35,7 +35,30 @@ router.get("/playlistTracks/:id", function (req, res) {
     }
   );
 });
-
+router.get("/allPlaylists", function (req, res) {
+  db.query(
+    "SELECT title, genre FROM playlist",
+    (err, results) => {
+      if (err) {
+        res.status(500).send({ message: "Erreur" });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+router.get("/allTracks", function (req, res) {
+  db.query(
+    "SELECT track.title, track.artist, track.album_picture, track.youtube_url FROM track",
+    (err, results) => {
+      if (err) {
+        res.status(500).send({ message: "Erreur", err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
 router.post("/createPlaylist", function (req, res) {
   const title = req.body.title;
   const genre = req.body.genre;
@@ -122,7 +145,7 @@ router.put("/updateTrack/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const form = req.body;
   db.query("UPDATE track SET ? WHERE id = ?", [form, id], (err) => {
-    if (err, results) {
+    if ((err, results)) {
       console.log(err);
       res.status(500).send("Erreur", err);
     } else {
