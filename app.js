@@ -98,3 +98,23 @@ app.delete("/playlist/:id", (req, res) => {
     }
   });
 });
+
+//en tant qu'utilisateur, je veux pouvoir modifier une playlist.
+
+app.put("/playlist/:id", (req, res) => {
+  const idPlaylist = req.params.id;
+  const formData = req.body;
+
+  db.query(
+    "UPDATE playlist SET ? WHERE id = ?",
+    [formData, idPlaylist],
+    (err) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Erreur lors de la modification d'une playlist");
+      } else {
+        res.sendStatus(200);
+      }
+    }
+  );
+});
