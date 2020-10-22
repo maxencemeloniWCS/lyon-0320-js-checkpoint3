@@ -77,14 +77,24 @@ app.post("/track", (req, res, next) => {
 //en tant qu'utilisateur, je veux lister tous les morceaux d'une playlist.
 
 app.get("/tracks", (req, res) => {
-  db.query(
-    "SELECT * FROM track",
-    (err, results) => {
-      if (err) {
-        res.status(500).send(`An error occurred`);
-      } else {
-        res.json(results);
-      }
+  db.query("SELECT * FROM track", (err, results) => {
+    if (err) {
+      res.status(500).send(`An error occurred`);
+    } else {
+      res.json(results);
     }
-  );
+  });
+});
+
+//en tant qu'utilisateur, je veux pouvoir supprimer une playlist.
+app.delete("/playlist/:id", (req, res) => {
+  const idPlaylist = req.params.id;
+  db.query("DELETE FROM playlist WHERE id = ?", [idPlaylist], (err) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Erreur lors de la suppression d'une playlist");
+    } else {
+      res.sendStatus(200);
+    }
+  });
 });
