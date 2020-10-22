@@ -25,12 +25,11 @@ CREATE TABLE `song`.`track`
   `youtube_url` VARCHAR
 (128),
   PRIMARY KEY
-(`id`));
-
-
-ALTER TABLE `song`.`track`
-ADD CONSTRAINT `playslist_id`
-  FOREIGN KEY
-(`playlist_id`)
- REFERENCES `song`.`track`
-(`id`)
+(`id`),
+FOREIGN KEY
+(playlist_id)
+        REFERENCES playlist
+(id)
+        ON
+DELETE CASCADE)
+;
