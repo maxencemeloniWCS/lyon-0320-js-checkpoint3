@@ -119,16 +119,30 @@ app.put("/playlist/:id", (req, res) => {
   );
 });
 
-
 //en tant qu'utilisateur, je veux supprimer un morceau d'une playlist.
 app.delete("/track/:id", (req, res) => {
-    const idTrack = req.params.id;
-    db.query("DELETE FROM track WHERE id = ?", [idTrack], (err) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send("Erreur lors de la suppression d'un morceau");
-      } else {
-        res.sendStatus(200);
-      }
-    });
+  const idTrack = req.params.id;
+  db.query("DELETE FROM track WHERE id = ?", [idTrack], (err) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Erreur lors de la suppression d'un morceau");
+    } else {
+      res.sendStatus(200);
+    }
   });
+});
+
+//en tant qu'utilisateur, je veux modifier un morceau d'une playlist.
+app.put("/track/:id", (req, res) => {
+  const idTrack = req.params.id;
+  const formData = req.body;
+
+  db.query("UPDATE track SET ? WHERE id = ?", [formData, idTrack], (err) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Erreur lors de la modification d'un morceau");
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
