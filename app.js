@@ -113,7 +113,7 @@ app.put("/playlist/:id", (req, res) => {
         console.log(err);
         res.status(500).send("Erreur lors de la modification d'une playlist");
       } else {
-        res.sendStatus(200);
+        res.json(200);
       }
     }
   );
