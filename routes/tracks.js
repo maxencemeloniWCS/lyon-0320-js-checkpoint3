@@ -41,21 +41,33 @@ router.put("/:id", (req, res) => {
   });
 });
 
-// Avoir toutes les playlist (ça c'est pour moi, plus simple pour tester mes routes derrière :))
+// Avoir tous les morceaux avec possiblité de filter par titre ou auteur
+
 router.get("/", (req, res) => {
-  db.query(
-    "SELECT id, title, artist, album_picture, youtube_url FROM track",
-    (err, results) => {
-      if (err) {
-        res.status(500).json({
-          error: err.message,
-          sql: err.sql,
-        });
-      } else {
-        res.status(200).json(results);
-      }
+  let myQuery =
+    "SELECT id, title, artist, album_picture, youtube_url FROM track";
+  if (req.query.title) {
+    myQuery =
+      "SELECT id, title, artist, album_picture, youtube_url FROM track WHERE title LIKE '%" +
+      req.query.title +
+      "%'";
+  }
+  if (req.query.artist) {
+    req.query.artist
+      ? (myQuery = myQuery + "AND artist LIKE '%" + req.query.artist + "%'")
+      : (myQuery = myQuery + "AND artist LIKE '%" + req.query.artist + "%'");
+  }
+
+  db.query(myQuery, (err, results) => {
+    if (err) {
+      res.status(500).json({
+        error: err.message,
+        sql: err.sql,
+      });
+    } else {
+      res.status(200).json(results);
     }
-  );
+  });
 });
 
 module.exports = router;

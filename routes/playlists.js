@@ -83,9 +83,23 @@ router.put("/:id", (req, res) => {
   );
 });
 
-// Avoir toutes les playlist (ça c'est pour moi, plus simple pour tester mes routes derrière :))
+// Avoir toutes les playlist et possibilité de chercher par genre ou titre
+
 router.get("/", (req, res) => {
-  db.query("SELECT id, title, genre FROM playlist", (err, results) => {
+  let myQuery = "SELECT id, title, genre FROM playlist";
+  if (req.query.title) {
+    myQuery =
+      "SELECT id, title, genre FROM playlist WHERE title LIKE '%" +
+      req.query.title +
+      "%'";
+  }
+  if (req.query.genre) {
+    req.query.title
+      ? (myQuery = myQuery + "AND genre LIKE '%" + req.query.genre + "%'")
+      : (myQuery = myQuery + "AND genre LIKE '%" + req.query.genre + "%'");
+  }
+
+  db.query(myQuery, (err, results) => {
     if (err) {
       res.status(500).json({
         error: err.message,
