@@ -2,11 +2,11 @@ const express = require('express');
 const httpErrors = require('http-errors');
 const logger = require('morgan');
 const path = require('path');
-const bodyParser=require('body-parser')
+const bodyParser = require('body-parser');
 
 const indexRouter = require('./routes/index');
 const playlistRouter = require('./routes/playlist');
-const trackRouter= require('./routes/track');
+const trackRouter = require('./routes/track');
 
 const app = express();
 
@@ -17,14 +17,11 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 app.use('/', indexRouter);
 app.use('/playlists', playlistRouter);
 app.use('/tracks', trackRouter);
-
-
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
