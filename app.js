@@ -52,7 +52,7 @@ app.get("/playlist/:id", (req, res) => {
       if (err) {
         res.status(500).send(`An error occurred: ${err.message}`);
       } else if (results.length === 0) {
-        res.status(404).send("Movie not found");
+        res.status(404).send("Playlist not found");
       } else {
         res.json(results[0]);
       }
@@ -74,3 +74,17 @@ app.post("/track", (req, res, next) => {
   });
 });
 
+//en tant qu'utilisateur, je veux lister tous les morceaux d'une playlist.
+
+app.get("/tracks", (req, res) => {
+  db.query(
+    "SELECT * FROM track",
+    (err, results) => {
+      if (err) {
+        res.status(500).send(`An error occurred`);
+      } else {
+        res.json(results);
+      }
+    }
+  );
+});
