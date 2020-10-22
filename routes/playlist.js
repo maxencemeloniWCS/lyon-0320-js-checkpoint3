@@ -13,10 +13,35 @@ router.get('/:id', (req,res)=>{
     })
 })
 
-router.post()
+router.post('/',(req,res)=>{
+    db.query('INSERT INTO playlist SET ?', req.body, (err,result)=>{
+        if(err){
+            res.status(500).send(err)
+        } else {
+            res.send(result)
+        }
+    })
+})
 
-router.delete()
+router.delete('/:id',(req,res)=>{
+    db.query('DELETE FROM playlist WHERE id=?', req.params.id, (err,result)=>{
+        if(err){
+            res.status(500).send(err)
+        } else {
+            res.send(`Playlist ${req.params.id} deleted`)
+        }
+    })
+})
 
-router.update()
+router.put('/:id', (req,res)=>{
+    db.query('UPDATE playlist SET ? WHERE id=?', [req.body, req.params.id], (err,result)=>{
+        if(err){
+            res.status(500).send(err)
+        } else {
+            res.send(result)
+        }
+    })
+})
+
 
 module.exports = router;
