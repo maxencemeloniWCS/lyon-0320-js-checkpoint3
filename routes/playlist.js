@@ -18,7 +18,7 @@ router.post('/',(req,res)=>{
         if(err){
             res.status(500).send(err)
         } else {
-            res.send(result)
+            res.send(`You have created the playlist ${JSON.stringify(req.body.title)}`)
         }
     })
 })
@@ -38,7 +38,7 @@ router.put('/:id', (req,res)=>{
         if(err){
             res.status(500).send(err)
         } else {
-            res.send(result)
+            res.send(`You have update ${JSON.stringify(req.body)} in playlist number ${req.params.id}`)
         }
     })
 })
