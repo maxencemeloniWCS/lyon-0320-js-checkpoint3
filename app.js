@@ -24,8 +24,8 @@ app.get("/tracks", (req, res) => {
 // Reécuperer une piste par titre :
 
 app.get("/tracks/:title", (req, res) => {
-    const genres = req.params.title; 
-    connexion.query("SELECT * FROM track WHERE genre = ? ", [genres], (err, result) => {
+    const titreTrack = req.params.title; 
+    connexion.query("SELECT * FROM track WHERE title = ? ", [titreTrack], (err, result) => {
         if(err){
             res.status(500).send("erreur dans la recuperation de la liste des pistes")
         } else {
@@ -73,6 +73,20 @@ app.get("/playlists/:id", (req, res, next) => {
         }
     })
 }); 
+
+// Reécuperer une playlist par titre :
+
+app.get("/playlists/:title", (req, res) => {
+    const titrePlaylist = req.params.title; 
+    connexion.query("SELECT * FROM playList WHERE title = ? ", [titrePlaylist], (err, result) => {
+        if(err){
+            res.status(500).send("erreur dans la recuperation de la playlist")
+        } else {
+            res.json(result); 
+            
+        }
+    })
+})
 
 // Ajouter une piste :
 
