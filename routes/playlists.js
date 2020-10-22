@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const connection = require("../db");
 const sqlError = require("../utils/errorSql");
+const getResult = require("../utils/getReslut");
 
 router.post("/", (req, res) => {
   connection.query("INSERT INTO playlist SET ?", [req.body], (err, results) => {
@@ -28,13 +29,7 @@ router.get("/:id", (req, res) => {
     "SELECT id, title, genre FROM playlist WHERE id = ?",
     [req.params.id],
     (err, results) => {
-      if (err) {
-        sqlError(res, err);
-      } else if (results != "") {
-        res.status(200).json(results);
-      } else {
-        res.sendStatus(404);
-      }
+      getResult(res, err, results);
     }
   );
 });
@@ -44,13 +39,7 @@ router.get("/:id/tracks", (req, res) => {
     "SELECT id, playlist_id, title, artist, album_picture, youtube_url FROM track where playlist_id = ?",
     [req.params.id],
     (err, results) => {
-      if (err) {
-        sqlError(res, err);
-      } else if (results != "") {
-        res.status(200).json(results);
-      } else {
-        res.sendStatus(404);
-      }
+      getResult(res, err, results);
     }
   );
 });
@@ -147,13 +136,7 @@ router.get("/", (req, res) => {
       "SELECT id, title, genre FROM playlist WHERE title = ?",
       [req.query.title],
       (err, results) => {
-        if (err) {
-          sqlError(res, err);
-        } else if (results != "") {
-          res.status(200).json(results);
-        } else {
-          res.sendStatus(404);
-        }
+        getResult(res, err, results);
       }
     );
   } else if (req.query.genre) {
@@ -161,26 +144,14 @@ router.get("/", (req, res) => {
       "SELECT id, title, genre FROM playlist WHERE genre = ?",
       [req.query.genre],
       (err, results) => {
-        if (err) {
-          sqlError(res, err);
-        } else if (results != "") {
-          res.status(200).json(results);
-        } else {
-          res.sendStatus(404);
-        }
+        getResult(res, err, results);
       }
     );
   } else {
     connection.query(
       "SELECT id, title, genre FROM playlist",
       (err, results) => {
-        if (err) {
-          sqlError(res, err);
-        } else if (results != "") {
-          res.status(200).json(results);
-        } else {
-          res.sendStatus(404);
-        }
+        getResult(res, err, results);
       }
     );
   }
