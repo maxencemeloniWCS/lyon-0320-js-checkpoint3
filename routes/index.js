@@ -36,17 +36,30 @@ router.get("/playlistTracks/:id", function (req, res) {
   );
 });
 router.get("/allPlaylists", function (req, res) {
-  db.query("SELECT title, genre FROM playlist", (err, results) => {
-    if (err) {
-      res.status(500).send({ message: "Erreur" });
-    } else {
-      res.status(200).send(results);
-    }
-  });
+  if (req.query.title === undefined && req.query.genre === undefined) {
+    db.query("SELECT title, genre FROM playlist", (err, results) => {
+      if (err) {
+        res.status(500).send({ message: "Erreur" });
+      } else {
+        res.status(200).send(results);
+      }
+    });
+  } else {
+    db.query(
+      `SELECT title, genre FROM playlist WHERE title LIKE '%${req.query.title}%' OR genre LIKE '%${req.query.genre}%'`,
+      (err, results) => {
+        if (err) {
+          res.status(500).send({ message: "Erreur", err });
+        } else {
+          res.status(200).send(results);
+        }
+      }
+    );
+  }
 });
 
 router.get("/allTracks", function (req, res) {
-  if (req.query.name===undefined && req.query.title===undefined) {
+  if (req.query.name === undefined && req.query.title === undefined) {
     db.query(
       "SELECT track.title, track.artist, track.album_picture, track.youtube_url FROM track",
       (err, results) => {
@@ -59,7 +72,7 @@ router.get("/allTracks", function (req, res) {
     );
   } else {
     db.query(
-      `SELECT track.title, track.artist, track.album_picture, track.youtube_url FROM track WHERE title LIKE '%${req.query.title}%' OR artist LIKE '%${req.query.artist}%'   `,
+      `SELECT track.title, track.artist, track.album_picture, track.youtube_url FROM track WHERE title LIKE '%${req.query.title}%' OR artist LIKE '%${req.query.artist}%'`,
       (err, results) => {
         if (err) {
           res.status(500).send({ message: "Erreur", err });
