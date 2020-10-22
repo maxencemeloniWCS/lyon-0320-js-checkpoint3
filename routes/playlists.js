@@ -39,8 +39,10 @@ router.get("/:id", (req, res) => {
           error: err.message,
           sql: err.sql,
         });
-      } else {
+      } else if (results != "") {
         res.status(200).json(results);
+      } else {
+        res.sendStatus(404);
       }
     }
   );
@@ -56,8 +58,10 @@ router.get("/:id/tracks", (req, res) => {
           error: err.message,
           sql: err.sql,
         });
-      } else {
+      } else if (results != "") {
         res.status(200).json(results);
+      } else {
+        res.sendStatus(404);
       }
     }
   );
@@ -168,6 +172,21 @@ router.put("/:id1/tracks/:id2", (req, res) => {
       }
     }
   );
+});
+
+router.get("/", (req, res) => {
+  connection.query("SELECT id, title, genre FROM playlist", (err, results) => {
+    if (err) {
+      res.status(500).send({
+        error: err.message,
+        sql: err.sql,
+      });
+    } else if (results != "") {
+      res.status(200).json(results);
+    } else {
+      res.status(404);
+    }
+  });
 });
 
 module.exports = router;
