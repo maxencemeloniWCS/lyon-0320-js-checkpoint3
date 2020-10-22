@@ -36,28 +36,39 @@ router.get("/playlistTracks/:id", function (req, res) {
   );
 });
 router.get("/allPlaylists", function (req, res) {
-  db.query(
-    "SELECT title, genre FROM playlist",
-    (err, results) => {
-      if (err) {
-        res.status(500).send({ message: "Erreur" });
-      } else {
-        res.status(200).send(results);
-      }
+  db.query("SELECT title, genre FROM playlist", (err, results) => {
+    if (err) {
+      res.status(500).send({ message: "Erreur" });
+    } else {
+      res.status(200).send(results);
     }
-  );
+  });
 });
+
 router.get("/allTracks", function (req, res) {
-  db.query(
-    "SELECT track.title, track.artist, track.album_picture, track.youtube_url FROM track",
-    (err, results) => {
-      if (err) {
-        res.status(500).send({ message: "Erreur", err });
-      } else {
-        res.status(200).send(results);
+  if (req.query.name===undefined && req.query.title===undefined) {
+    db.query(
+      "SELECT track.title, track.artist, track.album_picture, track.youtube_url FROM track",
+      (err, results) => {
+        if (err) {
+          res.status(500).send({ message: "Erreur", err });
+        } else {
+          res.status(200).send(results);
+        }
       }
-    }
-  );
+    );
+  } else {
+    db.query(
+      `SELECT track.title, track.artist, track.album_picture, track.youtube_url FROM track WHERE title LIKE '%${req.query.title}%' OR artist LIKE '%${req.query.artist}%'   `,
+      (err, results) => {
+        if (err) {
+          res.status(500).send({ message: "Erreur", err });
+        } else {
+          res.status(200).send(results);
+        }
+      }
+    );
+  }
 });
 router.post("/createPlaylist", function (req, res) {
   const title = req.body.title;
