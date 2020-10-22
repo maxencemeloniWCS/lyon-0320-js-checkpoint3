@@ -43,5 +43,20 @@ router.put('/:id', (req,res)=>{
     })
 })
 
+//BONUS - FILTER
+
+router.get('/', (req,res)=>{
+    const title = req.query.title;
+    db.query('SELECT title, genre FROM playlist WHERE title = ?', title, (err,result)=>{
+        if(err){
+            res.status(500).send(err)
+        } else {
+            res.send(result)
+        }
+    })
+})
+
+
+
 
 module.exports = router;
