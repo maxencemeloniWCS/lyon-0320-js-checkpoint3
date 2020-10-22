@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const connection = require("../db");
-const { route } = require("./track");
 
 router.post("/", (req, res) => {
   connection.query("INSERT INTO playlist SET ?", [req.body], (err, results) => {
