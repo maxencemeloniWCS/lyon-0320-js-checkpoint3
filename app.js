@@ -89,6 +89,19 @@ app.get("/playlists/:title", (req, res) => {
     })
 })
 
+// Reécuperer une playlist par genre :
+
+app.get("/playlists/:genre", (req, res) => {
+    const genrePlaylist = req.params.title; 
+    connexion.query("SELECT * FROM playList WHERE genre = ? ", [genrePlaylist], (err, result) => {
+        if(err){
+            res.status(500).send("erreur dans la recuperation de la playlist")
+        } else {
+            res.json(result); 
+            
+        }
+    })
+})
 
 // Les requetes Post :-----------------------------------------------------------------------------------------------------
 
