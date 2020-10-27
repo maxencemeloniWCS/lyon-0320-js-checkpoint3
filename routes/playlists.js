@@ -9,17 +9,8 @@ router.post("/", (req, res) => {
     if (err) {
       sqlError(res, err);
     } else {
-      connection.query(
-        "SELECT id, title, genre FROM playlist WHERE title = ?",
-        [req.body.title],
-        (err, results) => {
-          if (err) {
-            sqlError(res, err);
-          } else {
-            res.status(201).json(results);
-          }
-        }
-      );
+        req.body.id = results.insertId;
+        res.status(201).json(req.body);
     }
   });
 });
